@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'FZMiaoWuJW';
+  src: local('FZMiaoWuJW'), url(./font/FZMiaoWuJW.TTF) format('truetype');
+}
+
+* {
+  font-family: 'FZMiaoWuJW'!important;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: url(./img/bg.svg) repeat-x #a4c5d7;
+  background-position: 0 bottom;
+}
+
+.cloud {
+  position: absolute;
+  left: -1000vw;
+  top: 50px;
+  background: url(./img/cloud.svg) no-repeat;
+  width: 240px; 
+  height: 168px;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.cloud-0 {
+  top: 10px;
+  left: 40%;
+}
+
+.cloud-1 {
+  top: 50px;
+  animation: fly 40s infinite linear;
+}
+.cloud-2 {
+  top: 200px;
+  transform: scale(1.5);
+  animation: fly 50s infinite linear;
+  animation-delay: 10s;
+}
+.cloud-3 {
+  top: 80px;
+  transform: scale(2.0);
+  animation: fly 30s infinite linear;
+  animation-delay: 5s;
+}
+
+@keyframes fly {
+  0% {left: 100vw;}
+  100% {left: -100vw;}
+}
+
+.tree {
+  position: absolute;
+  bottom: -60px;
+  right: 90px;
+  width: 400px;
+}
