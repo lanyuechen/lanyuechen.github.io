@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'FZMiaoWuJW';
+  src: local('FZMiaoWuJW'), url(./font/FZMiaoWuJW.TTF) format('truetype');
+}
+
+* {
+  font-family: 'FZMiaoWuJW'!important;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: linear-gradient(azure, lightskyblue, skyblue, deepskyblue);
+}
+
+.shadow {
+  filter: url(#shadow);
+}
+
+.cloud-body {
+  fill: hsl(0, 0%, 100%);
+  stroke: #000;
+  stroke-width: 1px;
+}
+.cloud-mouth {
+  stroke: #000;
+  stroke-width: 2px;
+}

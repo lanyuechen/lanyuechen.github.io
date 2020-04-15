@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./main.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <svg id="scene" width="100vw" height="100vh"></svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="100vw" height="100vh">
+      <defs>
+        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset result="offOut" in="SourceAlpha" dx="10" dy="-10" />
+          <feGaussianBlur result="blurOut" in="colorOut" stdDeviation="10" />
+          <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+      </defs>
+      <g class="cloud shadow">
+        <g class="cloud-body">
+          <path
+            stroke="#000"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            d="m99.00396,1.25a31.47719,31.63598 0 0 0 -26.3226,14.3278a23.78195,23.89188 0 0 0 -14.87746,-5.27673a23.78195,23.89188 0 0 0 -23.41551,19.84883a29.32741,29.47398 0 0 0 -3.79876,-0.26872a29.32741,29.47398 0 0 0 -29.33962,29.47398a29.32741,29.47398 0 0 0 29.35184,29.46177a29.32741,29.47398 0 0 0 12.5811,-2.89488a23.78195,23.89188 0 0 0 19.48239,10.23589a23.78195,23.89188 0 0 0 16.39208,-6.60813a23.78195,23.89188 0 0 0 16.37986,6.60813a23.78195,23.89188 0 0 0 18.24871,-8.58691a23.78195,23.89188 0 0 0 18.22428,8.58691a23.78195,23.89188 0 0 0 23.76974,-23.87967a23.78195,23.89188 0 0 0 -9.9916,-19.43353a23.78195,23.89188 0 0 0 2.60172,-10.80998a23.78195,23.89188 0 0 0 -21.37566,-23.76974a31.47719,31.63598 0 0 0 -27.91051,-17.01503l0,0.00001z"
+          />
+        </g>
+        <g class="cloud-face">
+          <g class="cloud-eye cloud-eye-left">
+            <path d="m65.84001,52.86a2.87,2.87 0 0 1 -2.87,2.87a2.87,2.87 0 0 1 -2.87,-2.87a2.87,2.87 0 0 1 2.87,-2.88a2.87,2.87 0 0 1 2.88,2.88l-0.01,0z"/>
+            <path fill="#fff" d="m62.85001,51.8a0.94,0.94 0 0 1 -0.94,0.93a0.94,0.94 0 0 1 -0.93,-0.93a0.94,0.94 0 0 1 0.93,-0.94a0.94,0.94 0 0 1 0.94,0.94z"/>
+          </g>
+          <g class="cloud-eye cloud-eye-right">
+            <path d="m96.04001,52.86a2.87,2.87 0 0 1 -2.87,2.87a2.87,2.87 0 0 1 -2.87,-2.87a2.87,2.87 0 0 1 2.87,-2.88a2.87,2.87 0 0 1 2.87,2.88z"/>
+            <path fill="#fff" d="m93.04001,51.8a0.94,0.94 0 0 1 -0.93,0.93a0.94,0.94 0 0 1 -0.94,-0.93a0.94,0.94 0 0 1 0.94,-0.94a0.94,0.94 0 0 1 0.94,0.94l-0.01,0z"/>
+          </g>
+          <g class="cloud-mouth">
+            <path
+              fill="none"
+              d="m82.09001,54.65a4.02,3.28 0 0 1 0,0.08a4.02,3.28 0 0 1 -4.02,3.28a4.02,3.28 0 0 1 -4.02,-3.28l0,0a4.02,3.28 0 0 1 0,-0.08"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+        </g>
+        <g class="cloud__cheeks">
+          <g class="cloud__cheek cloud__cheek--left">
+            <circle cx="52.10001" cy="55.96" r="2.71" fill="#faa" fill-opacity="0.5" />
+          </g>
+          <g class="cloud__cheek cloud__cheek--right">
+            <circle cy="55.96" cx="104.21001" r="2.71" fill="#faa" fill-opacity="0.5" />
+          </g>
+        </g>
+      </g>
+    </svg>
+    <script src="./js/snap.svg-min.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

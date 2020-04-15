@@ -11,10 +11,11 @@ html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  background: linear-gradient(azure, lightskyblue, skyblue, deepskyblue);
 }
 
 body {
-  background: url(./img/bg.svg) repeat-x #a4c5d7;
+  background: url(./img/bg.svg) repeat-x;
   background-position: 0 center;
   background-size: cover;
 }
