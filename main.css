@@ -10,7 +10,6 @@
 html, body {
   height: 100%;
   margin: 0;
-  overflow: hidden;
 }
 
 body {
@@ -29,4 +28,8 @@ body {
 .cloud-mouth {
   stroke: #000;
   stroke-width: 2px;
+}
+
+.tree {
+  transform-origin: bottom;
 }

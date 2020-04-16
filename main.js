@@ -23,21 +23,21 @@
     pics.push(createHill(0, 0, 200));
 
     // 创建树
-    pics.push(createTree(w / 2, h - 250, 1.2));
+    pics.push(createTree(w / 2, h - 250, Math.min(1.2, w / 3 / 150)));
 
     pics.push(createHill(-w / 3, 0, 150));
     pics.push(createHill(w / 3, 0, 100));
 
     // 创建树
-    pics.push(createTree(100, h - 230, 1.5));
-
-    // 创建云
-    picsSky.push(createCloud(100, 100));
-    picsSky.push(createCloud(w - 500, 50));
-    picsSky.push(createCloud(w / 3, 200, 1.2));
+    pics.push(createTree(w * 0.1, h - 150, Math.min(1, w / 3 / 150)));
 
     // 创建太阳
-    picsSky.push(createSun(w - 200, 50, 0.8));
+    picsSky.push(createSun(w - 150 - w * 0.05, h * 0.03, 0.8));
+
+    // 创建云
+    picsSky.push(createCloud(w * 0.05, 50));
+    picsSky.push(createCloud(w * 0.6, 100));
+    picsSky.push(createCloud(w * 0.3, 200, 1.2));
 
     for (let i = 0; i < picsSky.length; i++) {
       TweenMax.from(picsSky[i].node, 1.5, {
@@ -57,10 +57,8 @@
   }
 
   function createCloud(x, y, scale = 1) {
-    const cloud = snap.g().addClass('cloud').attr({
-      filter: shadow,
-      transform: `translate(${x}, ${y}) scale(${scale})`
-    });
+    const transform = Snap.matrix().translate(x, y).scale(scale).toTransformString();
+    const cloud = snap.g().addClass('cloud').attr({filter: shadow}).transform(transform);
     const cloudBody = cloud.g().addClass('cloud-body');
     cloudBody.path('m99.00396,1.25a31.47719,31.63598 0 0 0 -26.3226,14.3278a23.78195,23.89188 0 0 0 -14.87746,-5.27673a23.78195,23.89188 0 0 0 -23.41551,19.84883a29.32741,29.47398 0 0 0 -3.79876,-0.26872a29.32741,29.47398 0 0 0 -29.33962,29.47398a29.32741,29.47398 0 0 0 29.35184,29.46177a29.32741,29.47398 0 0 0 12.5811,-2.89488a23.78195,23.89188 0 0 0 19.48239,10.23589a23.78195,23.89188 0 0 0 16.39208,-6.60813a23.78195,23.89188 0 0 0 16.37986,6.60813a23.78195,23.89188 0 0 0 18.24871,-8.58691a23.78195,23.89188 0 0 0 18.22428,8.58691a23.78195,23.89188 0 0 0 23.76974,-23.87967a23.78195,23.89188 0 0 0 -9.9916,-19.43353a23.78195,23.89188 0 0 0 2.60172,-10.80998a23.78195,23.89188 0 0 0 -21.37566,-23.76974a31.47719,31.63598 0 0 0 -27.91051,-17.01503l0,0.00001z')
       .attr({
@@ -96,12 +94,12 @@
   }
 
   function createSun(x, y, scale = 1) {
+    const transform = Snap.matrix().translate(x, y).scale(scale).toTransformString();
     const sun = snap.g().addClass('sun').attr({
       stroke: '#000',
       strokeWidth: 2,
       filter: shadow,
-      transform: `translate(${x}, ${y}) scale(${scale})`
-    });
+    }).transform(transform);
     sun.path(`m17.63653,137.61925c-9.45453,-23.27268 -5.81817,-50.18172 -1.09091,-71.63622c4.72726,-21.45451 18.54542,-34.18175 34.54539,-41.09083c15.99996,-6.90908 39.63628,-18.90905 77.45439,-10.1818c37.8181,8.72726 45.09082,30.90903 55.27261,51.27263c10.1818,20.36359 -1.81817,69.81804 -7.99998,82.54528c-6.18181,12.72725 -45.45445,40.36356 -67.27259,41.8181c-21.81814,1.45455 -53.09081,-15.27269 -67.99987,-22.18177c-14.90906,-6.90908 -13.45452,-7.27271 -22.90904,-30.54539z`).attr({
       fill: '#FF4500',
     });
@@ -110,11 +108,11 @@
   }
 
   function createHill(x, y, height, colorStart, colorEnd) {
+    const transform = Snap.matrix().translate(x, y).toTransformString();
     const hill = snap.g().addClass('hill').attr({
       stroke: '#000',
       strokeWidth: 2,
-      transform: `translate(${x}, ${y})`
-    });
+    }).transform(transform);
     const k = () => Math.random() / 4 + 0.125;
     colorStart = colorStart || Snap.hsl(120, 100, 30 + Math.random() * 10);
     colorEnd = colorEnd || Snap.hsl(120, 100, Math.random() * 10);
@@ -126,9 +124,9 @@
   }
 
   function createTree(x, y, scale = 1) {
-    const tree = snap.g().addClass('tree').attr({
-      transform: `translate(${x}, ${y}) scale(${scale})`
-    });
+    const transform = Snap.matrix().translate(x, y).scale(scale, scale, 75, 150).toTransformString();
+    const tree = snap.g().addClass('tree').transform(transform);
+
     tree.path('m90.371555,152.355557c-20.196553,-32.474219 7.488451,-43.888049 7.488451,-43.888049s-2.292289,-3.695617 -3.668037,-1.693746c-1.375124,2.001662 -9.475157,5.081657 -9.169574,3.849575s7.641658,-7.392073 7.641658,-7.392073l-1.375332,-3.54145s-9.169574,10.163733 -10.239738,8.777693c-1.069957,-2.771661 3.667829,-11.087481 3.667829,-11.087481l-6.724493,-3.696036s0,6.775822 -1.222333,13.089561s-4.737994,3.696036 -4.737994,3.696036l-1.222333,-17.863303l-5.808159,1.232082l0.764997,19.556839l-14.824733,-14.937056l-4.737578,4.003324c4.279204,3.387911 14.747818,13.474561 11.614655,12.011647c-2.445081,-2.926247 -14.518318,-6.159572 -14.518318,-6.159572l0,2.617912s13.907152,1.847913 19.867479,13.705393c7.275374,17.200341 -9.787808,26.139952 -12.722238,27.52683c-0.270659,0.128822 -0.420749,0.191871 -0.420749,0.191871l40.346332,0l0.000208,0z')
       .attr({
         fill: '#593003',
