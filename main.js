@@ -23,7 +23,7 @@
     pics.push(createHill(0, 0, 200));
 
     // 创建树
-    pics.push(createTree(w / 2, h - 250, Math.min(1.2, w / 3 / 150)));
+    pics.push(createTree(w / 2, h - 220, Math.min(1.2, w / 3 / 150)));
 
     pics.push(createHill(-w / 3, 0, 150));
     pics.push(createHill(w / 3, 0, 100));
@@ -78,7 +78,7 @@
     eye.clone().transform('translate(30, 0)');
 
     const cloudMouth = cloudFace.g().addClass('cloud-mouth');
-    cloudMouth.path('m82.09001,54.65a4.02,3.28 0 0 1 0,0.08a4.02,3.28 0 0 1 -4.02,3.28a4.02,3.28 0 0 1 -4.02,-3.28l0,0a4.02,3.28 0 0 1 0,-0.08').attr({
+    cloudMouth.path('m82.09001,54.65a4.02,3.28 0 0 1 -4.02,3.28a4.02,3.28 0 0 1 -4.02,-3.28').attr({
       fill: 'none',
       strokeLinejoin: 'round',
       strokeLinecap: 'round',

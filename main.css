@@ -23,7 +23,6 @@ body {
 .cloud-body {
   fill: hsl(0, 0%, 100%);
   stroke: #000;
-  stroke-width: 1px;
 }
 .cloud-mouth {
   stroke: #000;
