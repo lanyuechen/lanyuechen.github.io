@@ -9,9 +9,10 @@
   draw();
 
   function draw() {
-    // 创建山
+    const picsSky = [];
     const pics = [];
 
+    // 创建山
     const ms = Snap.hsl(180, 100, 20 + Math.random() * 10);
     const me = Snap.hsl(180, 100, Math.random() * 10);
     pics.push(createHill(0, 0, h - 100, ms, me));
@@ -20,23 +21,35 @@
 
     // 创建矮山
     pics.push(createHill(0, 0, 200));
+
+    // 创建树
+    pics.push(createTree(w / 2, h - 250, 1.2));
+
     pics.push(createHill(-w / 3, 0, 150));
     pics.push(createHill(w / 3, 0, 100));
 
     // 创建树
-    pics.push(createTree(100, h - 250, 1.2));
+    pics.push(createTree(100, h - 230, 1.5));
 
     // 创建云
-    pics.push(createCloud(100, 100));
-    pics.push(createCloud(w - 500, 50));
-    pics.push(createCloud(w / 3, 200, 1.2));
+    picsSky.push(createCloud(100, 100));
+    picsSky.push(createCloud(w - 500, 50));
+    picsSky.push(createCloud(w / 3, 200, 1.2));
 
     // 创建太阳
-    pics.push(createSun(w - 200, 50, 0.8));
+    picsSky.push(createSun(w - 200, 50, 0.8));
+
+    for (let i = 0; i < picsSky.length; i++) {
+      TweenMax.from(picsSky[i].node, 1.5, {
+        y: `-=${h / 2}`,
+        delay: Math.random(),
+        ease: Bounce.easeOut,
+      });
+    }
 
     for (let i = 0; i < pics.length; i++) {
-      TweenMax.from(pics[i].node, 1.5, {
-        y: '-=100',
+      TweenMax.from(pics[i].node, 2, {
+        y: `+=${h}`,
         delay: Math.random(),
         ease: Bounce.easeOut,
       });
