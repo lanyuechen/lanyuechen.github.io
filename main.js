@@ -6,11 +6,14 @@
 
   const shadow = snap.filter(Snap.filter.shadow(10, -10, 10, '#000', 0.8));
 
+  const EASE = Power1.easeOut;
+
   draw();
 
   function draw() {
     const picsSky = [];
     const pics = [];
+    const hills = [];
 
     // 创建山
     const ms = Snap.hsl(180, 100, 20 + Math.random() * 10);
@@ -20,13 +23,13 @@
     pics.push(createHill(w / 3, 0, h - 300, ms, me));
 
     // 创建矮山
-    pics.push(createHill(0, 0, 200));
+    hills.push(createHill(0, 0, 200));
 
     // 创建树
     pics.push(createTree(w / 2, h - 220, Math.min(1.2, w / 3 / 150)));
 
-    pics.push(createHill(-w / 3, 0, 150));
-    pics.push(createHill(w / 3, 0, 100));
+    hills.push(createHill(-w / 3, 0, 150));
+    hills.push(createHill(w / 3, 0, 100));
 
     // 创建树
     pics.push(createTree(w * 0.1, h - 150, Math.min(1, w / 3 / 150)));
@@ -39,11 +42,12 @@
     picsSky.push(createCloud(w * 0.6, 100));
     picsSky.push(createCloud(w * 0.3, 200, 1.2));
 
+    // 动画
     for (let i = 0; i < picsSky.length; i++) {
       TweenMax.from(picsSky[i].node, 1.5, {
         y: `-=${h / 2}`,
         delay: Math.random(),
-        ease: Bounce.easeOut,
+        ease: EASE,
       });
     }
 
@@ -51,9 +55,19 @@
       TweenMax.from(pics[i].node, 2, {
         y: `+=${h}`,
         delay: Math.random(),
-        ease: Bounce.easeOut,
+        ease: EASE,
       });
     }
+
+    for (let i = 0; i < hills.length; i++) {
+      TweenMax.from(hills[i].node, 2, {
+        y: `+=${h}`,
+        delay: Math.random(),
+        ease: EASE,
+      });
+    }
+
+    createBike(hills);
   }
 
   function createCloud(x, y, scale = 1) {
@@ -103,7 +117,7 @@
     sun.path(`m17.63653,137.61925c-9.45453,-23.27268 -5.81817,-50.18172 -1.09091,-71.63622c4.72726,-21.45451 18.54542,-34.18175 34.54539,-41.09083c15.99996,-6.90908 39.63628,-18.90905 77.45439,-10.1818c37.8181,8.72726 45.09082,30.90903 55.27261,51.27263c10.1818,20.36359 -1.81817,69.81804 -7.99998,82.54528c-6.18181,12.72725 -45.45445,40.36356 -67.27259,41.8181c-21.81814,1.45455 -53.09081,-15.27269 -67.99987,-22.18177c-14.90906,-6.90908 -13.45452,-7.27271 -22.90904,-30.54539z`).attr({
       fill: '#FF4500',
     });
-    sun.text(15, 55, '￣ _  ￣').transform('scale(2)');
+    sun.text(15, 55, '').transform('scale(2)');
     return sun;
   }
 
@@ -116,7 +130,7 @@
     const k = () => Math.random() / 4 + 0.125;
     colorStart = colorStart || Snap.hsl(120, 100, 30 + Math.random() * 10);
     colorEnd = colorEnd || Snap.hsl(120, 100, Math.random() * 10);
-    hill.path(`M0 ${h} Q${k() * w} ${h - height} ${w / 2} ${h - height} Q${ (1 - k()) * w} ${h - height} ${w} ${h}Z`).attr({
+    hill.path(`M0 ${h} Q${k() * w} ${h - height} ${w / 2} ${h - height} Q${ (1 - k()) * w} ${h - height} ${w} ${h}`).attr({
       fill: snap.gradient(`l(0, 0, 0, 1)${colorStart}-${colorEnd}`),
       filter: shadow
     });
@@ -143,5 +157,61 @@
         filter: shadow,
       });
     return tree;
+  }
+
+  function createBike(hills) {
+    const bike = snap.g().addClass('bike').hover(() => {
+      light.addClass('light--active');
+      // umbrella.setDirection(1);
+      // umbrella.play();
+    }, () => {
+      light.removeClass('light--active');
+      // umbrella.setDirection(-1);
+      // umbrella.play();
+    });
+    const container = bike.g().attr({transform: 'translate(-20, -40)'});
+    const light = container.image('./img/light.png', 30, 12, 45, 20).addClass('light');
+    const bmContainer = container.svg(0, 0, 40, 40, 0, 0, 556, 568);
+    const umbrellaAnimation = bmContainer.g().attr({transform: 'translate(0, -180)'});
+  
+    bodymovin.loadAnimation({
+      container: bmContainer.node,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: './data/bike.json',
+    }).setSpeed(1);
+  
+    const umbrella = bodymovin.loadAnimation({
+      container: umbrellaAnimation.node,
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      path: './data/umbrella.json',
+    });
+
+    umbrella.setSpeed(2);
+  
+    const run = (idx) => {
+      const hill = hills[idx];
+      bike.remove();
+      bike.appendTo(hill);
+      const path = anime.path(hill.children()[0]);
+
+      anime({
+        targets: bike.node,
+        translateX: path('x'),
+        translateY: path('y'),
+        rotate: path('angle'),
+        easing: 'linear',
+        duration: 15000,
+        loop: false,
+        complete: function() {
+          run((idx + 1) % hills.length);
+        }
+      });
+    }
+
+    run(0);
   }
 })();
