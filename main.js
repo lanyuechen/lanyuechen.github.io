@@ -6,68 +6,61 @@
 
   const shadow = snap.filter(Snap.filter.shadow(10, -10, 10, '#000', 0.8));
 
-  const EASE = Power1.easeOut;
+  const EASE = Bounce.easeOut;
 
   draw();
 
   function draw() {
-    const picsSky = [];
-    const pics = [];
+    const skys = [];
+    const trees = [];
     const hills = [];
+    const mounts = [];
 
     // 创建山
     const ms = Snap.hsl(180, 100, 20 + Math.random() * 10);
     const me = Snap.hsl(180, 100, Math.random() * 10);
-    pics.push(createHill(0, 0, h - 100, ms, me));
-    pics.push(createHill(-w / 3, 0, h - 200, ms, me));
-    pics.push(createHill(w / 3, 0, h - 300, ms, me));
+    mounts.push(createHill(0, 0, h - 100, ms, me));
+    mounts.push(createHill(-w / 3, 0, h - 200, ms, me));
+    mounts.push(createHill(w / 3, 0, h - 300, ms, me));
 
     // 创建矮山
     hills.push(createHill(0, 0, 200));
 
     // 创建树
-    pics.push(createTree(w / 2, h - 220, Math.min(1.2, w / 3 / 150)));
+    trees.push(createTree(w / 2, h - 220, Math.min(1.2, w / 3 / 150)));
 
     hills.push(createHill(-w / 3, 0, 150));
     hills.push(createHill(w / 3, 0, 100));
 
     // 创建树
-    pics.push(createTree(w * 0.1, h - 150, Math.min(1, w / 3 / 150)));
+    trees.push(createTree(w * 0.1, h - 150, Math.min(1, w / 3 / 150)));
 
     // 创建太阳
-    picsSky.push(createSun(w - 150 - w * 0.05, h * 0.03, 0.8));
+    skys.push(createSun(w - 150 - w * 0.05, h * 0.03, 0.8));
 
     // 创建云
-    picsSky.push(createCloud(w * 0.05, 50));
-    picsSky.push(createCloud(w * 0.6, 100));
-    picsSky.push(createCloud(w * 0.3, 200, 1.2));
+    skys.push(createCloud(w * 0.05, 50));
+    skys.push(createCloud(w * 0.6, 100));
+    skys.push(createCloud(w * 0.3, 200, 1.2));
 
     // 动画
-    for (let i = 0; i < picsSky.length; i++) {
-      TweenMax.from(picsSky[i].node, 1.5, {
+    for (let i = 0; i < skys.length; i++) {
+      TweenMax.from(skys[i].node, 1.5, {
         y: `-=${h / 2}`,
         delay: Math.random(),
         ease: EASE,
       });
     }
 
-    for (let i = 0; i < pics.length; i++) {
-      TweenMax.from(pics[i].node, 2, {
+    for (let pic of [...trees, ...hills, ...mounts]) {
+      TweenMax.from(pic.node, 2, {
         y: `+=${h}`,
         delay: Math.random(),
         ease: EASE,
       });
     }
 
-    for (let i = 0; i < hills.length; i++) {
-      TweenMax.from(hills[i].node, 2, {
-        y: `+=${h}`,
-        delay: Math.random(),
-        ease: EASE,
-      });
-    }
-
-    createBike(hills);
+    createBike([...hills, ...mounts]);
   }
 
   function createCloud(x, y, scale = 1) {
@@ -82,28 +75,28 @@
         strokeLinecap: 'round',
       });
 
-    const cloudFace = cloud.g().addClass('cloud-face');
-    const eye = cloudFace.g().addClass('cloud-eye');
-    eye.path('m65.84001,52.86a2.87,2.87 0 0 1 -2.87,2.87a2.87,2.87 0 0 1 -2.87,-2.87a2.87,2.87 0 0 1 2.87,-2.88a2.87,2.87 0 0 1 2.88,2.88l-0.01,0z');
-    eye.path('m62.85001,51.8a0.94,0.94 0 0 1 -0.94,0.93a0.94,0.94 0 0 1 -0.93,-0.93a0.94,0.94 0 0 1 0.93,-0.94a0.94,0.94 0 0 1 0.94,0.94z').attr({
-      fill: '#fff'
-    });
+    // const cloudFace = cloud.g().addClass('cloud-face');
+    // const eye = cloudFace.g().addClass('cloud-eye');
+    // eye.path('m65.84001,52.86a2.87,2.87 0 0 1 -2.87,2.87a2.87,2.87 0 0 1 -2.87,-2.87a2.87,2.87 0 0 1 2.87,-2.88a2.87,2.87 0 0 1 2.88,2.88l-0.01,0z');
+    // eye.path('m62.85001,51.8a0.94,0.94 0 0 1 -0.94,0.93a0.94,0.94 0 0 1 -0.93,-0.93a0.94,0.94 0 0 1 0.93,-0.94a0.94,0.94 0 0 1 0.94,0.94z').attr({
+    //   fill: '#fff'
+    // });
 
-    eye.clone().transform('translate(30, 0)');
+    // eye.clone().transform('translate(30, 0)');
 
-    const cloudMouth = cloudFace.g().addClass('cloud-mouth');
-    cloudMouth.path('m82.09001,54.65a4.02,3.28 0 0 1 -4.02,3.28a4.02,3.28 0 0 1 -4.02,-3.28').attr({
-      fill: 'none',
-      strokeLinejoin: 'round',
-      strokeLinecap: 'round',
-    });
+    // const cloudMouth = cloudFace.g().addClass('cloud-mouth');
+    // cloudMouth.path('m82.09001,54.65a4.02,3.28 0 0 1 -4.02,3.28a4.02,3.28 0 0 1 -4.02,-3.28').attr({
+    //   fill: 'none',
+    //   strokeLinejoin: 'round',
+    //   strokeLinecap: 'round',
+    // });
 
-    const cheek = cloudFace.g().addClass('cloud-cheek');
-    cheek.circle(52.1, 55.96, 2.71).attr({
-      fill: '#faa',
-      fillOpacity: 0.5,
-    });
-    cheek.clone().transform('translate(52, 0)')
+    // const cheek = cloudFace.g().addClass('cloud-cheek');
+    // cheek.circle(52.1, 55.96, 2.71).attr({
+    //   fill: '#faa',
+    //   fillOpacity: 0.5,
+    // });
+    // cheek.clone().transform('translate(52, 0)');
     return cloud;
   }
 
@@ -171,7 +164,7 @@
     });
     const container = bike.g().attr({transform: 'translate(-20, -40)'});
     const light = container.image('./img/light.png', 30, 12, 45, 20).addClass('light');
-    const bmContainer = container.svg(0, 0, 40, 40, 0, 0, 556, 568);
+    const bmContainer = container.g().attr({transform: 'scale(0.07)'});
     const umbrellaAnimation = bmContainer.g().attr({transform: 'translate(0, -180)'});
   
     bodymovin.loadAnimation({
