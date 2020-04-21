@@ -45,3 +45,32 @@ body {
   transition: width 0.2s, opacity 0s;
   opacity: 0.6;
 }
+
+.options {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.options .btn {
+  color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  padding: 4px 10px;
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.options .btn:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.options .btn.active {
+  border-color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 1);
+}

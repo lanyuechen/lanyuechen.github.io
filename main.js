@@ -1,4 +1,19 @@
-(function() {
+const theme = {
+  hill: {
+    spring: ['#7CFC00', '#bce475'],
+    summer: ['#009900', '#000000'],
+    fall: ['#ffb415', '#006666'],
+    winter: ['#ffffff', '#006666']
+  },
+  mount: {
+    spring: ['#009900', '#006666'],
+    summer: ['#006666', '#000000'],
+    fall: ['#ff8d00', '#006666'],
+    winter: ['#ffffff', '#006666']
+  }
+}
+
+;(function() {
   const w = window.innerWidth;
   const h = window.innerHeight;
 
@@ -8,6 +23,36 @@
 
   const EASE = Bounce.easeOut;
 
+  season = localStorage.season || 'spring';
+  document.querySelector(`.options .btn[data-role=${season}]`).className = 'btn active';
+
+  document.querySelector('.options').addEventListener('click', function() {
+    const s = event.target.getAttribute('data-role');
+    if (s === season) {
+      return;
+    }
+    if (['spring', 'summer', 'fall', 'winter'].includes(s)) {
+      season = s;
+      localStorage.season = season;
+      document.querySelector('.options .btn.active').className = 'btn';
+      event.target.className = 'btn active';
+    } else if ([].includes(s)) {
+
+    } else {
+      return;
+    }
+
+    // 重绘
+    Snap.selectAll('.cloud').remove();
+    Snap.selectAll('.sun').remove();
+    Snap.selectAll('.mount').remove();
+    Snap.selectAll('.hill').remove();
+    Snap.selectAll('.tree').remove();
+    Snap.selectAll('.bike').remove();
+    draw();
+  })
+
+  let sense = Snap.set();
   draw();
 
   function draw() {
@@ -17,23 +62,25 @@
     const mounts = [];
 
     // 创建山
-    const ms = Snap.hsl(180, 100, 20 + Math.random() * 10);
-    const me = Snap.hsl(180, 100, Math.random() * 10);
+    const ms = Snap.color(theme.mount[season][0]).hex;
+    const me = Snap.color(theme.mount[season][1]).hex;
     mounts.push(createHill(0, 0, h - 100, ms, me));
     mounts.push(createHill(-w / 3, 0, h - 200, ms, me));
     mounts.push(createHill(w / 3, 0, h - 300, ms, me));
 
-    // 创建矮山
-    hills.push(createHill(0, 0, 200));
+    // 创建坡
+    const hs = Snap.color(theme.hill[season][0]).hex;
+    const he = Snap.color(theme.hill[season][1]).hex;
+    hills.push(createHill(0, 0, 200, hs, he));
 
     // 创建树
-    trees.push(createTree(w / 2, h - 220, Math.min(1.2, w / 3 / 150)));
+    // trees.push(createTree(w / 2, h - 220, Math.min(1.2, w / 3 / 150)));
 
-    hills.push(createHill(-w / 3, 0, 150));
-    hills.push(createHill(w / 3, 0, 100));
+    hills.push(createHill(-w / 3, 0, 150, hs, he));
+    hills.push(createHill(w / 3, 0, 100, hs, he));
 
     // 创建树
-    trees.push(createTree(w * 0.1, h - 150, Math.min(1, w / 3 / 150)));
+    // trees.push(createTree(w * 0.1, h - 150, Math.min(1, w / 3 / 150)));
 
     // 创建太阳
     skys.push(createSun(w - 150 - w * 0.05, h * 0.03, 0.8));
@@ -117,12 +164,9 @@
   function createHill(x, y, height, colorStart, colorEnd) {
     const transform = Snap.matrix().translate(x, y).toTransformString();
     const hill = snap.g().addClass('hill').attr({
-      stroke: '#000',
       strokeWidth: 0,
     }).transform(transform);
     const k = () => Math.random() / 4 + 0.125;
-    colorStart = colorStart || Snap.hsl(120, 100, 30 + Math.random() * 10);
-    colorEnd = colorEnd || Snap.hsl(120, 100, Math.random() * 10);
     hill.path(`M0 ${h} Q${k() * w} ${h - height} ${w / 2} ${h - height} Q${ (1 - k()) * w} ${h - height} ${w} ${h}`).attr({
       fill: snap.gradient(`l(0, 0, 0, 1)${colorStart}-${colorEnd}`),
       filter: shadow
